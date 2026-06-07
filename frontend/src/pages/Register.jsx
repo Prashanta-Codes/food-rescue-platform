@@ -24,11 +24,18 @@ const Register = () => {
     setMessage({ type: "", text: "" });
 
     
-    if (!formData.name || !formData.email || !formData.password || !formData.role || !formData.mobile || !formData.address) {
-      setMessage({ type: "error", text: "Sabhi details bharna zaroori hai! ⚠️" });
-      return;
-    }
+if (!formData.name || !formData.email || !formData.password || !formData.role || !formData.mobile || !formData.address) {
+  setMessage({ type: "error", text: "Sabhi details bharna zaroori hai! ⚠️" });
+  return;
+}
 
+if (formData.mobile.length !== 10) {
+  setMessage({
+    type: "error",
+    text: "Mobile number exactly 10 digits hona chahiye! 📱"
+  });
+  return;
+}
     
     if (formData.role === "ngo" && !formData.ngoKey) {
       setMessage({ type: "error", text: "NGO Secret Key chahiye registration ke liye! 🔑" });
@@ -89,10 +96,20 @@ const Register = () => {
               <input type="email" placeholder="Email Address" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
             </div>
 
-            <div className="input-field">
-              <input type="text" placeholder="Mobile Number" value={formData.mobile} onChange={(e) => setFormData({...formData, mobile: e.target.value})} />
-            </div>
-
+<div className="input-field">
+  <input
+    type="text"
+    placeholder="Mobile Number"
+    value={formData.mobile}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        mobile: e.target.value.replace(/\D/g, "").slice(0, 10)
+      })
+    }
+    maxLength={10}
+  />
+</div>
             <div className="input-field">
               <input type="text" placeholder="Address / Location" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
             </div>
